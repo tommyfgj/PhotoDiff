@@ -16,7 +16,8 @@
     <div class="ui container">
         <div class="ui segments">
             <div class="ui segment">
-                <button class="ui green button" id="allchosen">一起选的</button>
+                <button class="ui green button" id="allchosen">全部</button>
+                <button class="ui green button" id="diffchosen">一起都选了的</button>
                 <button class="ui violet button" id="mamachosen">麻麻选的</button>
                 <button class="ui pink button" id="baobaochosen">宝宝选的</button>
                 <button class="ui teal button" id="newchosen">新增</button>
@@ -52,6 +53,7 @@
     }
     </style>
     <script type="text/javascript">
+    
     $(document).ready(function() {
 
         var
@@ -93,17 +95,31 @@
             });
         loadimg("all");
         $(".ui.cards").viewer({url:"data-original"});
+
         $("#allchosen").click(function() {
+            $(".ui.cards").viewer("destroy");
             loadimg("all");
+            $(".ui.cards").viewer({url:"data-original"});
         });
         $("#mamachosen").click(function() {
+            $(".ui.cards").viewer("destroy");
             loadimg("mama");
+            viewer = $(".ui.cards").viewer({url:"data-original"});
         });
         $("#baobaochosen").click(function() {
+            $(".ui.cards").viewer("destroy");
             loadimg("baobao");
+            viewer = $(".ui.cards").viewer({url:"data-original"});
         });
         $("#newchosen").click(function() {
+            $(".ui.cards").viewer("destroy");
             loadimg("new");
+            viewer = $(".ui.cards").viewer({url:"data-original"});
+        });
+        $("#diffchosen").click(function() {
+            $(".ui.cards").viewer("destroy");
+            loadimg("diff");
+            viewer = $(".ui.cards").viewer({url:"data-original"});
         });
         // $("img[rel]").click(function() {
         //     loadimg()
@@ -564,6 +580,27 @@
         return $list;
     }
 
+    Array.intersect = function () {  
+        var result = new Array();  
+        var obj = {};  
+        for (var i = 0; i < arguments.length; i++) {  
+            for (var j = 0; j < arguments[i].length; j++) {  
+                var str = arguments[i][j];  
+                if (!obj[str]) {  
+                    obj[str] = 1;  
+                }  
+                else {  
+                    obj[str]++;  
+                    if (obj[str] == arguments.length)  
+                    {  
+                        result.push(str);  
+                    }  
+                }//end else  
+            }//end for j  
+        }//end for i  
+        return result;  
+    }
+
     function loadimg($type) {
         $baseDir = "https://szcrossn.oss-cn-shenzhen.aliyuncs.com/";
         $mamaFiles = getMamaFiles();
@@ -574,6 +611,7 @@
         $chosenStr2 = "";
         $template = "";
         $search = new Array();
+        $diffs = Array.intersect($mamaFiles, $baobaoFiles);
 
         if ($type == "all") {
             $search = $all;
@@ -583,6 +621,8 @@
             $search = $mamaFiles;
         } else if ($type == "new") {
             $search = $newest;
+        } else if ($type == "diff") {
+            $search = $diffs;
         }
 
         $.each($search, function(i, value){
