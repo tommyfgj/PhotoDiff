@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <script src="script/jquery-3.2.1.js"></script>
+    <script src="imageviewer/dist/viewer.js"></script>
+    <script src="semantic/dist/semantic.min.js"></script>
+    <link  href="imageviewer/dist/viewer.css" rel="stylesheet">
+    
+    <title>婚纱照选择器</title>
+</head>
+
+<body>
+    <h1 class="ui center aligned header">婚纱照</h1>
+    <div class="ui container">
+        <div class="ui segments">
+            <div class="ui segment">
+                <button class="ui green button" id="allchosen">一起选的</button>
+                <button class="ui violet button" id="mamachosen">麻麻选的</button>
+                <button class="ui pink button" id="baobaochosen">宝宝选的</button>
+                <button class="ui teal button" id="newchosen">新增</button>
+            </div>
+            <div class="ui segment">
+                <div class="ui eight stackable cards">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui modal fullscreen">
+        <div class="image content scrolling">
+                <img class="image" width='30%' height="30%" src='' />
+        </div>
+        
+    </div>
+    <style>
+    .last.container {
+        margin-bottom: 300px !important;
+    }
+
+    h1.ui.center.header {
+        margin-top: 3em;
+    }
+
+    h2.ui.center.header {
+        margin: 4em 0em 2em;
+    }
+
+    h3.ui.center.header {
+        margin-top: 2em;
+        padding: 2em 0em;
+    }
+    </style>
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+        var
+            $headers = $('body > h1'),
+            $header = $headers.first(),
+            ignoreScroll = false,
+            timer;
+
+        // Preserve example in viewport when resizing browser
+        // $(window)
+        //     .on('resize', function() {
+        //         // ignore callbacks from scroll change
+        //         clearTimeout(timer);
+        //         $headers.visibility('disable callbacks');
+
+        //         // preserve position
+        //         $(document).scrollTop($header.offset().top);
+
+        //         // allow callbacks in 500ms
+        //         timer = setTimeout(function() {
+        //             $headers.visibility('enable callbacks');
+        //         }, 500);
+        //     });
+        $headers
+            .visibility({
+                // fire once each time passed
+                once: false,
+
+                // don't refresh position on resize
+                checkOnRefresh: true,
+
+                // lock to this element on resize
+                onTopPassed: function() {
+                    $header = $(this);
+                },
+                onTopPassedReverse: function() {
+                    $header = $(this);
+                }
+            });
+        loadimg("all");
+        $(".ui.cards").viewer({url:"data-original"});
+        $("#allchosen").click(function() {
+            loadimg("all");
+        });
+        $("#mamachosen").click(function() {
+            loadimg("mama");
+        });
+        $("#baobaochosen").click(function() {
+            loadimg("baobao");
+        });
+        $("#newchosen").click(function() {
+            loadimg("new");
+        });
+        // $("img[rel]").click(function() {
+        //     loadimg()
+        //     $(".ui.modal img").attr("src", $(this).attr("src").replace('/thumb/', ''));
+        //     $(".ui.modal").modal('show');
+        // });
+    });
+
+    function  getMamaFiles() {
+        $list = [
+            "255A0007.jpg",
+            "255A0010.jpg",
+            "255A0017.jpg",
+            "255A0021.jpg",
+            "255A0029.jpg",
+            "255A0031.jpg",
+            "255A0038.jpg",
+            "255A0048.jpg",
+            "255A0051.jpg",
+            "255A0054.jpg",
+            "255A0061.jpg",
+            "255A0070.jpg",
+            "255A0085.jpg",
+            "255A0090.jpg",
+            "255A0091.jpg",
+            "255A0096.jpg",
+            "255A8153.jpg",
+            "255A8186.jpg",
+            "255A8188.jpg",
+            "255A8190.jpg",
+            "255A8191.jpg",
+            "255A8192.jpg",
+            "255A8193.jpg",
+            "255A8208.jpg",
+            "255A8219.jpg",
+            "255A8318.jpg",
+            "255A8333.jpg",
+            "255A8334.jpg",
+            "255A8372.jpg",
+            "255A8379.jpg",
+            "255A8380.jpg",
+            "255A8381.jpg",
+            "255A8413.jpg",
+            "255A8423.jpg",
+            "255A8428.jpg",
+            "255A8439.jpg",
+            "255A8473.jpg",
+            "255A8481.jpg",
+            "255A8482.jpg",
+            "255A8487.jpg",
+            "255A8491.jpg",
+            "255A8493.jpg",
+            "255A8495.jpg",
+            "255A8498.jpg",
+            "255A8510.jpg",
+            "255A8526.jpg",
+            "255A8528.jpg",
+            "255A8530.jpg",
+            "255A8532.jpg",
+            "255A8535.jpg",
+            "255A8536.jpg",
+            "255A8542.jpg",
+            "255A8543.jpg",
+            "255A8545.jpg",
+            "255A8550.jpg",
+            "255A8553.jpg",
+            "255A8554.jpg",
+            "255A8558.jpg",
+            "255A8560.jpg",
+            "255A8563.jpg",
+            "255A8572.jpg",
+            "255A8592.jpg",
+            "255A8594.jpg",
+            "255A8596.jpg",
+            "255A8611.jpg",
+            "255A8616.jpg",
+            "255A8621.jpg",
+            "255A8622.jpg",
+            "255A8643.jpg",
+            "255A8645.jpg",
+            "255A8667.jpg",
+            "255A8686.jpg",
+            "255A8687.jpg",
+            "255A8688.jpg",
+            "255A8692.jpg",
+            "255A8694.jpg",
+            "255A8697.jpg",
+            "255A8709.jpg",
+            "255A8713.jpg",
+            "255A8723.jpg",
+            "255A8731.jpg",
+            "255A8744.jpg",
+            "255A8753.jpg",
+            "255A8764.jpg",
+            "255A8779.jpg",
+            "255A9971.jpg",
+            "255A9978.jpg",
+            "255A9980.jpg",
+            "255A9984.jpg",
+            "255A9988.jpg",
+            "255A9990.jpg",
+            "255A9993.jpg",
+            "255A9999.jpg"
+        ];
+        return $list;
+    }
+
+    function getBaobaoFiles() {
+        $list = [
+            "255A0006.jpg",
+            "255A0010.jpg",
+            "255A0011.jpg",
+            "255A0012.jpg",
+            "255A0016.jpg",
+            "255A0017.jpg",
+            "255A0021.jpg",
+            "255A0034.jpg",
+            "255A0035.jpg",
+            "255A0048.jpg",
+            "255A0051.jpg",
+            "255A0054.jpg",
+            "255A0056.jpg",
+            "255A0065.jpg",
+            "255A0085.jpg",
+            "255A0091.jpg",
+            "255A0094.jpg",
+            "255A0096.jpg",
+            "255A8153.jpg",
+            "255A8161.jpg",
+            "255A8175.jpg",
+            "255A8176.jpg",
+            "255A8186.jpg",
+            "255A8188.jpg",
+            "255A8191.jpg",
+            "255A8193.jpg",
+            "255A8204.jpg",
+            "255A8289.jpg",
+            "255A8295.jpg",
+            "255A8318.jpg",
+            "255A8372.jpg",
+            "255A8373.jpg",
+            "255A8382.jpg",
+            "255A8482.jpg",
+            "255A8486.jpg",
+            "255A8498.jpg",
+            "255A8526.jpg",
+            "255A8530.jpg",
+            "255A8540.jpg",
+            "255A8550.jpg",
+            "255A8560.jpg",
+            "255A8563.jpg",
+            "255A8570.jpg",
+            "255A8577.jpg",
+            "255A8584.jpg",
+            "255A8592.jpg",
+            "255A8594.jpg",
+            "255A8597.jpg",
+            "255A8617.jpg",
+            "255A8621.jpg",
+            "255A8643.jpg",
+            "255A8645.jpg",
+            "255A8667.jpg",
+            "255A8673.jpg",
+            "255A8676.jpg",
+            "255A8683.jpg",
+            "255A8686.jpg",
+            "255A8689.jpg",
+            "255A8690.jpg",
+            "255A8694.jpg",
+            "255A8696.jpg",
+            "255A8701.jpg",
+            "255A8723.jpg",
+            "255A8731.jpg",
+            "255A8753.jpg",
+            "255A8762.jpg",
+            "255A8764.jpg",
+            "255A8779.jpg",
+            "255A9971.jpg",
+            "255A9978.jpg",
+            "255A9988.jpg",
+            "255A9993.jpg",
+            "255A9999.jpg"
+        ];
+        return $list;
+    }
+
+    function  getAllFiles() {
+        $list = [
+            "255A0002.jpg",
+            "255A0006.jpg",
+            "255A0007.jpg",
+            "255A0010.jpg",
+            "255A0011.jpg",
+            "255A0012.jpg",
+            "255A0014.jpg",
+            "255A0016.jpg",
+            "255A0017.jpg",
+            "255A0021.jpg",
+            "255A0022.jpg",
+            "255A0026.jpg",
+            "255A0029.jpg",
+            "255A0031.jpg",
+            "255A0034.jpg",
+            "255A0035.jpg",
+            "255A0038.jpg",
+            "255A0040.jpg",
+            "255A0042.jpg",
+            "255A0047.jpg",
+            "255A0048.jpg",
+            "255A0051.jpg",
+            "255A0054.jpg",
+            "255A0056.jpg",
+            "255A0057.jpg",
+            "255A0061.jpg",
+            "255A0063.jpg",
+            "255A0065.jpg",
+            "255A0068.jpg",
+            "255A0070.jpg",
+            "255A0071.jpg",
+            "255A0085.jpg",
+            "255A0090.jpg",
+            "255A0091.jpg",
+            "255A0094.jpg",
+            "255A0096.jpg",
+            "255A8147.jpg",
+            "255A8149.jpg",
+            "255A8152.jpg",
+            "255A8153.jpg",
+            "255A8154.jpg",
+            "255A8155.jpg",
+            "255A8159.jpg",
+            "255A8161.jpg",
+            "255A8163.jpg",
+            "255A8174.jpg",
+            "255A8175.jpg",
+            "255A8176.jpg",
+            "255A8177.jpg",
+            "255A8179.jpg",
+            "255A8180.jpg",
+            "255A8186.jpg",
+            "255A8187.jpg",
+            "255A8188.jpg",
+            "255A8190.jpg",
+            "255A8191.jpg",
+            "255A8192.jpg",
+            "255A8193.jpg",
+            "255A8194.jpg",
+            "255A8195.jpg",
+            "255A8196.jpg",
+            "255A8200.jpg",
+            "255A8201.jpg",
+            "255A8202.jpg",
+            "255A8204.jpg",
+            "255A8208.jpg",
+            "255A8210.jpg",
+            "255A8215.jpg",
+            "255A8216.jpg",
+            "255A8218.jpg",
+            "255A8219.jpg",
+            "255A8220.jpg",
+            "255A8221.jpg",
+            "255A8222.jpg",
+            "255A8260.jpg",
+            "255A8269.jpg",
+            "255A8272.jpg",
+            "255A8278.jpg",
+            "255A8279.jpg",
+            "255A8285.jpg",
+            "255A8288.jpg",
+            "255A8289.jpg",
+            "255A8290.jpg",
+            "255A8291.jpg",
+            "255A8292.jpg",
+            "255A8295.jpg",
+            "255A8298.jpg",
+            "255A8307.jpg",
+            "255A8313.jpg",
+            "255A8318.jpg",
+            "255A8321.jpg",
+            "255A8328.jpg",
+            "255A8333.jpg",
+            "255A8334.jpg",
+            "255A8338.jpg",
+            "255A8348.jpg",
+            "255A8352.jpg",
+            "255A8354.jpg",
+            "255A8366.jpg",
+            "255A8369.jpg",
+            "255A8372.jpg",
+            "255A8373.jpg",
+            "255A8375.jpg",
+            "255A8377.jpg",
+            "255A8379.jpg",
+            "255A8380.jpg",
+            "255A8381.jpg",
+            "255A8382.jpg",
+            "255A8383.jpg",
+            "255A8391.jpg",
+            "255A8392.jpg",
+            "255A8395.jpg",
+            "255A8396.jpg",
+            "255A8397.jpg",
+            "255A8400.jpg",
+            "255A8401.jpg",
+            "255A8403.jpg",
+            "255A8406.jpg",
+            "255A8408.jpg",
+            "255A8410.jpg",
+            "255A8413.jpg",
+            "255A8415.jpg",
+            "255A8421.jpg",
+            "255A8423.jpg",
+            "255A8428.jpg",
+            "255A8433.jpg",
+            "255A8434.jpg",
+            "255A8439.jpg",
+            "255A8443.jpg",
+            "255A8444.jpg",
+            "255A8446.jpg",
+            "255A8447.jpg",
+            "255A8449.jpg",
+            "255A8454.jpg",
+            "255A8457.jpg",
+            "255A8459.jpg",
+            "255A8462.jpg",
+            "255A8470.jpg",
+            "255A8473.jpg",
+            "255A8479.jpg",
+            "255A8481.jpg",
+            "255A8482.jpg",
+            "255A8486.jpg",
+            "255A8487.jpg",
+            "255A8490.jpg",
+            "255A8491.jpg",
+            "255A8493.jpg",
+            "255A8495.jpg",
+            "255A8496.jpg",
+            "255A8498.jpg",
+            "255A8500.jpg",
+            "255A8503.jpg",
+            "255A8505.jpg",
+            "255A8507.jpg",
+            "255A8510.jpg",
+            "255A8513.jpg",
+            "255A8514.jpg",
+            "255A8516.jpg",
+            "255A8517.jpg",
+            "255A8526.jpg",
+            "255A8528.jpg",
+            "255A8530.jpg",
+            "255A8532.jpg",
+            "255A8535.jpg",
+            "255A8536.jpg",
+            "255A8540.jpg",
+            "255A8542.jpg",
+            "255A8543.jpg",
+            "255A8545.jpg",
+            "255A8547.jpg",
+            "255A8550.jpg",
+            "255A8553.jpg",
+            "255A8554.jpg",
+            "255A8558.jpg",
+            "255A8560.jpg",
+            "255A8563.jpg",
+            "255A8564.jpg",
+            "255A8567.jpg",
+            "255A8570.jpg",
+            "255A8572.jpg",
+            "255A8574.jpg",
+            "255A8576.jpg",
+            "255A8577.jpg",
+            "255A8578.jpg",
+            "255A8580.jpg",
+            "255A8584.jpg",
+            "255A8590.jpg",
+            "255A8592.jpg",
+            "255A8594.jpg",
+            "255A8596.jpg",
+            "255A8597.jpg",
+            "255A8599.jpg",
+            "255A8611.jpg",
+            "255A8613.jpg",
+            "255A8616.jpg",
+            "255A8617.jpg",
+            "255A8621.jpg",
+            "255A8622.jpg",
+            "255A8624.jpg",
+            "255A8627.jpg",
+            "255A8628.jpg",
+            "255A8632.jpg",
+            "255A8641.jpg",
+            "255A8643.jpg",
+            "255A8645.jpg",
+            "255A8650.jpg",
+            "255A8667.jpg",
+            "255A8670.jpg",
+            "255A8673.jpg",
+            "255A8676.jpg",
+            "255A8683.jpg",
+            "255A8686.jpg",
+            "255A8687.jpg",
+            "255A8688.jpg",
+            "255A8689.jpg",
+            "255A8690.jpg",
+            "255A8692.jpg",
+            "255A8694.jpg",
+            "255A8696.jpg",
+            "255A8697.jpg",
+            "255A8701.jpg",
+            "255A8709.jpg",
+            "255A8710.jpg",
+            "255A8713.jpg",
+            "255A8720.jpg",
+            "255A8723.jpg",
+            "255A8725.jpg",
+            "255A8728.jpg",
+            "255A8730.jpg",
+            "255A8731.jpg",
+            "255A8733.jpg",
+            "255A8735.jpg",
+            "255A8737.jpg",
+            "255A8744.jpg",
+            "255A8753.jpg",
+            "255A8758.jpg",
+            "255A8762.jpg",
+            "255A8763.jpg",
+            "255A8764.jpg",
+            "255A8766.jpg",
+            "255A8772.jpg",
+            "255A8779.jpg",
+            "255A9971.jpg",
+            "255A9978.jpg",
+            "255A9980.jpg",
+            "255A9984.jpg",
+            "255A9985.jpg",
+            "255A9988.jpg",
+            "255A9990.jpg",
+            "255A9993.jpg",
+            "255A9996.jpg",
+            "255A9998.jpg",
+            "255A9999.jpg"
+        ];
+        return $list;
+    }
+
+    function getNewest() {
+        $list = [
+            "255A8683.jpg",
+            "255A8676.jpg",
+            "255A8689.jpg",
+            "255A8713.jpg",
+            "255A8744.jpg",
+            "255A8487.jpg",
+            "255A8540.jpg",
+            "255A8570.jpg",
+            "255A8596.jpg"
+        ];
+        return $list;
+    }
+
+    function loadimg($type) {
+        $baseDir = "./photo/jpg/";
+        $mamaFiles = getMamaFiles();
+        $baobaoFiles = getBaobaoFiles();
+        $newest = getNewest();
+        $all = getAllFiles();
+        $chosenStr = "";
+        $chosenStr2 = "";
+        $template = "";
+        $search = new Array();
+
+        if ($type == "all") {
+            $search = $all;
+        } else if ($type == "baobao") {
+            $search = $baobaoFiles;
+        } else if ($type == "mama") {
+            $search = $mamaFiles;
+        } else if ($type == "new") {
+            $search = $newest;
+        }
+
+        $.each($search, function(i, value){
+            //console.log($.inArray(value, $baobaoFiles));
+            if ($.inArray(value, $mamaFiles) >= 0 && $.inArray(value, $baobaoFiles) == -1 && $.inArray(value, $newest) == -1) {
+                $chosenStr = '<a class="ui violet label">' + "麻麻选的" + '</a>';
+                $chosenStr2 = "麻麻选的";
+            } else if ($.inArray(value, $mamaFiles) == -1 && $.inArray(value, $baobaoFiles) >= 0 && $.inArray(value, $newest) == -1) {
+                $chosenStr = '<a class="ui pink label">' + "宝宝选的" + '</a>';
+                $chosenStr2 = "宝宝选的";
+            } else if ($.inArray(value, $newest) >= 0) {
+                $chosenStr = '<a class="ui teal label">' + "新增" + '</a>';
+                $chosenStr2 = '新增';
+            } else if ($.inArray(value, $mamaFiles) >= 0 && $.inArray(value, $baobaoFiles) >= 0 && $.inArray(value, $newest) == -1) {
+                $chosenStr = '<a class="ui green label">' + "一起选的" + '</a>';
+                $chosenStr2 = "一起选的";
+            }
+
+
+            $template += '<div class="card"> \
+                        <div class="image"> \
+                            <img rel="boracay" alt="' + $chosenStr2 + '" src="' + $baseDir + "/thumb/" + value + '" data-original="' + $baseDir +  value + '">\
+                        </div>\
+                        <div class="content">\
+                            <a class="header">' + value+ '</a>\
+                            <div class="description">\
+                                ' + $chosenStr + '\
+                            </div>\
+                        </div>\
+                    </div>';
+        });
+
+        $(".ui.eight.stackable.cards").html('');
+        $(".ui.eight.stackable.cards").append($template);
+
+    }
+    </script>
+</body>
+
+</html>
