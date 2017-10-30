@@ -6,6 +6,7 @@
     <script src="https://szcrossn.oss-cn-shenzhen.aliyuncs.com/static/script/jquery-3.2.1.js"></script>
     <script src="https://szcrossn.oss-cn-shenzhen.aliyuncs.com/static/imageviewer/dist/viewer.js"></script>
     <script src="https://szcrossn.oss-cn-shenzhen.aliyuncs.com/static/semantic/dist/semantic.min.js"></script>
+    <script src="http://cdn.bootcss.com/jqueryui/1.11.2/jquery-ui.js"></script>
     <link  href="https://szcrossn.oss-cn-shenzhen.aliyuncs.com/static/imageviewer/dist/viewer.css" rel="stylesheet">
     
     <title>婚纱照选择器</title>
@@ -23,16 +24,11 @@
                 <button class="ui teal button" id="newchosen">新增</button>
             </div>
             <div class="ui segment">
+                <div class="floating ui teal label" id="counter"></div>
                 <div class="ui eight stackable cards">
                 </div>
             </div>
         </div>
-    </div>
-    <div class="ui modal fullscreen">
-        <div class="image content scrolling">
-                <img class="image" width='30%' height="30%" src='' />
-        </div>
-        
     </div>
     <style>
     .last.container {
@@ -50,6 +46,15 @@
     h3.ui.center.header {
         margin-top: 2em;
         padding: 2em 0em;
+    }
+    #drawer {
+        width: 80%;
+    }
+    .viewer-container {
+        -webkit-user-select: text; 
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
     }
     </style>
     <script type="text/javascript">
@@ -120,6 +125,21 @@
             $(".ui.cards").viewer("destroy");
             loadimg("diff");
             viewer = $(".ui.cards").viewer({url:"data-original"});
+        });
+
+        $('.modal').modal({
+            onShow: function(){
+                $(this).css({'z-index': '100000'});
+                $(this).draggable({
+                   cancel: ".content"
+                });
+            },
+            onHidden: function(){
+                $(this).css({
+                    'top': '50%',
+                    'left': '50%'
+                })
+            }
         });
         // $("img[rel]").click(function() {
         //     loadimg()
@@ -611,7 +631,7 @@
         $chosenStr2 = "";
         $template = "";
         $search = new Array();
-        $diffs = Array.intersect($mamaFiles, $baobaoFiles);
+        $diffs = Array.intersect($mamaFiles, $baobaoFiles).concat($newest);
 
         if ($type == "all") {
             $search = $all;
@@ -625,6 +645,7 @@
             $search = $diffs;
         }
 
+        $("#counter").html($search.length + '张');
         $.each($search, function(i, value){
             //console.log($.inArray(value, $baobaoFiles));
             if ($.inArray(value, $mamaFiles) >= 0 && $.inArray(value, $baobaoFiles) == -1 && $.inArray(value, $newest) == -1) {
@@ -644,7 +665,7 @@
 
             $template += '<div class="card"> \
                         <div class="image"> \
-                            <img rel="boracay" alt="' + $chosenStr2 + '" src="' + $baseDir + "/thumb/" + value + '" data-original="' + $baseDir +  value + '">\
+                            <img rel="boracay" alt="' + value + ' - ' + $chosenStr2 + '" src="' + $baseDir + "/thumb/" + value + '" data-original="' + $baseDir +  value + '">\
                         </div>\
                         <div class="content">\
                             <a class="header">' + value+ '</a>\
@@ -657,7 +678,6 @@
 
         $(".ui.eight.stackable.cards").html('');
         $(".ui.eight.stackable.cards").append($template);
-
     }
     </script>
 </body>
